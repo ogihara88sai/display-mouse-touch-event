@@ -171,21 +171,38 @@ function log(is_document, text, colorStyle = '#ddd') {
     `background: #000; padding: 4px;color: ${colorStyle}`,
   )
 
-  // ログエリアに p 要素を追加
   const div = is_document ? log_area_d : log_area
-  const p = document.createElement('p')
-  p.textContent = text
-  p.style.setProperty('color', colorStyle)
-  p.style.color = colorStyle
-  div.append(p)
-
-  // 一番下までスクロール
-  div.scrollTo(0, 99999999)
-
-  // 新しい 100 件のみを残す
+  let shouldCreateNewP = true
   const pArray = div.querySelectorAll('p')
-  const maxCount = 100
-  for (let i = 0; i < pArray.length - maxCount; i++) {
-    pArray[i].remove()
+  const last2p = Array.prototype.slice.call(pArray, -2).reverse()
+  for (const p of last2p) {
+    const thisEventType = p.getAttribute('data-event-type')
+    if (text === thisEventType) {
+      const count = parseInt(p.getAttribute('data-count')) || 1
+      const newCount = count + 1
+      p.setAttribute('data-count', newCount)
+      p.innerHTML = `${thisEventType}<span class="count">${newCount}</span>`
+      shouldCreateNewP = false
+      break
+    }
+  }
+
+  if (shouldCreateNewP) {
+    const p = document.createElement('p')
+    p.setAttribute('data-event-type', text)
+    p.textContent = text
+    p.style.setProperty('color', colorStyle)
+    p.style.color = colorStyle
+    div.append(p)
+
+    // 一番下までスクロール
+    div.scrollTo(0, 99999999)
+
+    // 新しい 100 件のみを残す
+    const pArray = div.querySelectorAll('p')
+    const maxCount = 100
+    for (let i = 0; i < pArray.length - maxCount; i++) {
+      pArray[i].remove()
+    }
   }
 }

@@ -55,6 +55,7 @@ h4 {
 .log-area {
   position: relative;
   background: #222;
+  font-size: 0.9em;
   height: 24em;
   width: 11em;
   overflow-y: auto;
@@ -68,6 +69,14 @@ h4 {
   font-size: 1em;
   line-height: 1.2em;
   font-weight: bold;
+}
+
+.log-area p .count {
+  background: #444;
+  color: white;
+  font-size: 0.7em;
+  border-radius: 0.5em;
+  margin: 0 0 0 0.5em;
 }
 
 .log-area::-webkit-scrollbar,
