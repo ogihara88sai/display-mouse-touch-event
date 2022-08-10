@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,user-scalable=no"
+    />
+    <title>MouseEvent, TouchEvent, PointerEvent, WheelEvent の確認</title>
+    <link href="./style.css" rel="stylesheet" />
+    <script src="./main.js"></script>
+  </head>
+  <body>
+    <section>
+      <h2>MouseEvent, TouchEvent, PointerEvent, WheelEvent の確認</h2>
+      <p>ユーザ環境: <span id="user_agent"></span></p>
+      <h4>
+        以下の四角の要素をクリック・タップするとイベントの発生状況を確認できます
+      </h4>
+      <div id="touch_area_wrapper" class="touch-area-wrapper">
+        <div id="event_area" class="touch-area"></div>
+        <div id="event_area_pd" class="touch-area">preventDefault</div>
+        <div id="event_area_pdsp" class="touch-area">
+          preventDefault + stopPropagation
+        </div>
+        <div id="dummy_area" class="touch-area"></div>
+      </div>
+      <div class="log-area-wrapper">
+        <div>
+          <h4>四角の要素上で発生しているイベント</h4>
+          <div id="log_area" class="log-area"></div>
+        </div>
+        <div>
+          <h4>document 上で発生しているイベント</h4>
+          <div id="log_area_d" class="log-area"></div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+/* prettier-ignore */
+body, div, p, span {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #444;
+  font-size: 14px;
+  margin: 2em;
+  background: #f3f3f3;
+}
+
+h4 {
+  margin: 2em 0 0;
+  line-height: 1em;
+}
+
+.log-area-wrapper,
+.touch-area-wrapper {
+  display: flex;
+  overflow-x: auto;
+}
+
+.touch-area {
+  border: 1px solid gray;
+  margin: 1em 0;
+  box-sizing: border-box;
+}
+
+.touch-area {
+  background: #c8f1d7;
+  height: 8em;
+  width: 8em;
+  min-width: 8em;
+  margin-right: 1em;
+  padding: 1em;
+  user-select: none;
+  word-break: break-all;
+}
+
+#dummy_area {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.log-area-wrapper {
+  overflow-x: hidden;
+}
+
+.log-area-wrapper > div {
+  margin: 0 1em 0 0;
+}
+
+.log-area {
+  position: relative;
+  background: #222;
+  height: 24em;
+  width: 11em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  margin: 1em 0 0;
+  transform: translateZ(0);
+}
+
+.log-area p {
+  font-size: 1em;
+  line-height: 1.2em;
+  font-weight: bold;
+}
+
+.log-area::-webkit-scrollbar,
+.log-area::-webkit-scrollbar-thumb {
+  width: 0.5em;
+  border-radius: 0.25em;
+}
+
+.log-area::-webkit-scrollbar-thumb {
+  background-color: #888;
+}
