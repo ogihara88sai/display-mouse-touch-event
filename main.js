@@ -151,12 +151,13 @@ function createDeletableElm() {
 }
 
 // 1秒後にログに罫線を追加するための setTimeout, clearTimeout の管理用の変数
-let hrTimer
+const hrTimers = [null, null]
 
 // 1秒後にログに罫線を追加する
 function logHR(is_document) {
-  clearTimeout(hrTimer)
-  hrTimer = setTimeout(() => {
+  const index = is_document ? 0 : 1
+  clearTimeout(hrTimers[index])
+  hrTimers[index] = setTimeout(() => {
     log(is_document, '-------')
   }, 1000)
 }
