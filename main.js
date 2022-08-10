@@ -168,7 +168,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function createDeletableElm() {
   const elm = document.createElement('div')
   elm.classList.add('touch-area')
-  elm.textContent = 'mousedown or touchstart で要素削除'
+  elm.innerHTML = 'mousedown or touchstart で要素削除'
 
   allEventTypes.forEach((eventType, i) => {
     const colorStr = `hsl(${i * 20}, 100%, 80%)`

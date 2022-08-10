@@ -23,13 +23,12 @@ h4 {
 }
 
 .touch-area {
-  border: 1px solid gray;
+  position: relative;
+  border: 1px solid #419860;
   margin: 1em 0;
   box-sizing: border-box;
-}
-
-.touch-area {
   background: #c8f1d7;
+  color: #419860;
   height: 8em;
   width: 8em;
   min-width: 8em;
@@ -37,6 +36,16 @@ h4 {
   padding: 1em;
   user-select: none;
   word-break: break-all;
+}
+
+.touch-area .child {
+  position: absolute;
+  right: 0.4em;
+  bottom: 0.4em;
+  line-height: 1em;
+  background: #6b0f0f;
+  color: white;
+  padding: 0.2em;
 }
 
 #dummy_area {
