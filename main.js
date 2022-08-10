@@ -35,6 +35,18 @@ const allEventTypes = mosueEventTypes
   .concat(touchEventTypes)
   .concat(pointerEventTypes)
 
+const currentLogConfig = {
+  mouse: true,
+  touch: true,
+  pointer: true,
+}
+
+const emojiMap = {
+  mouse: '🖱',
+  touch: '👆',
+  pointer: '🌀',
+}
+
 // Element 参照用の変数
 let eventElm
 let eventElmPD
@@ -60,15 +72,18 @@ window.addEventListener('DOMContentLoaded', () => {
   allEventTypes.forEach((eventType, i) => {
     const colorStr = `hsl(${i * 20}, 100%, 80%)`
 
-    let emoji = ''
-    if (mosueEventTypes.includes(eventType)) emoji = '🖱'
-    else if (touchEventTypes.includes(eventType)) emoji = '👆'
-    else if (pointerEventTypes.includes(eventType)) emoji = '🌀'
+    let parentEventType = ''
+    if (mosueEventTypes.includes(eventType)) parentEventType = 'mouse'
+    else if (touchEventTypes.includes(eventType)) parentEventType = 'touch'
+    else if (pointerEventTypes.includes(eventType)) parentEventType = 'pointer'
+
+    const emoji = emojiMap[parentEventType] || ''
 
     // preventDefault しない
     eventElm.addEventListener(
       eventType,
       (event) => {
+        if (!currentLogConfig[parentEventType]) return
         log(false, emoji + ' ' + eventType, colorStr)
         logHR(false)
       },
@@ -79,6 +94,7 @@ window.addEventListener('DOMContentLoaded', () => {
     eventElmPD.addEventListener(
       eventType,
       (event) => {
+        if (!currentLogConfig[parentEventType]) return
         log(false, emoji + ' ' + eventType, colorStr)
         logHR(false)
         event.preventDefault()
@@ -90,6 +106,7 @@ window.addEventListener('DOMContentLoaded', () => {
     eventElmPDSP.addEventListener(
       eventType,
       (event) => {
+        if (!currentLogConfig[parentEventType]) return
         log(false, emoji + ' ' + eventType, colorStr)
         logHR(false)
         event.preventDefault()
@@ -100,12 +117,52 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // ドキュメント
     document.addEventListener(eventType, (event) => {
+      if (!currentLogConfig[parentEventType]) return
       log(true, emoji + ' ' + eventType, colorStr)
       logHR(true)
     })
   })
 
   createDeletableElm()
+
+  const urlQueries = getUrlQueries()
+  let field
+  if (urlQueries.field) {
+    field = {
+      mouse: false,
+      touch: false,
+      pointer: false,
+    }
+    urlQueries.field.split('+').forEach((item) => {
+      field[item] = true
+    })
+  } else {
+    field = {
+      mouse: true,
+      touch: true,
+      pointer: true,
+    }
+  }
+
+  const checkboxes = document.querySelectorAll('input[type=checkbox]')
+  checkboxes.forEach((checkbox) => {
+    const eventType = checkbox.getAttribute('data-event-type')
+    checkbox.addEventListener('change', () => {
+      currentLogConfig[eventType] = checkbox.checked
+      let fieldQueryStrs = []
+      for (const key in currentLogConfig) {
+        if (currentLogConfig[key]) {
+          fieldQueryStrs.push(key)
+        }
+      }
+      if (fieldQueryStrs.length === 0) {
+        fieldQueryStrs.push('null')
+      }
+      const fieldQueryStr = fieldQueryStrs.join('+')
+      history.replaceState('', '', '?field=' + fieldQueryStr)
+    })
+    checkbox.checked = currentLogConfig[eventType] = field[eventType]
+  })
 })
 
 function createDeletableElm() {
@@ -116,14 +173,17 @@ function createDeletableElm() {
   allEventTypes.forEach((eventType, i) => {
     const colorStr = `hsl(${i * 20}, 100%, 80%)`
 
-    let emoji = ''
-    if (mosueEventTypes.includes(eventType)) emoji = '🖱'
-    else if (touchEventTypes.includes(eventType)) emoji = '👆'
-    else if (pointerEventTypes.includes(eventType)) emoji = '🌀'
+    let parentEventType = ''
+    if (mosueEventTypes.includes(eventType)) parentEventType = 'mouse'
+    else if (touchEventTypes.includes(eventType)) parentEventType = 'touch'
+    else if (pointerEventTypes.includes(eventType)) parentEventType = 'pointer'
+
+    const emoji = emojiMap[parentEventType] || ''
 
     elm.addEventListener(
       eventType,
       (event) => {
+        if (!currentLogConfig[parentEventType]) return
         log(false, emoji + ' ' + eventType, colorStr)
         logHR(false)
       },
@@ -205,4 +265,17 @@ function log(is_document, text, colorStyle = '#ddd') {
       pArray[i].remove()
     }
   }
+}
+
+function getUrlQueries() {
+  const queryStr = window.location.search.slice(1)
+  queries = {}
+  if (!queryStr) {
+    return queries
+  }
+  queryStr.split('&').forEach(function (queryStr) {
+    const queryArr = queryStr.split('=')
+    queries[queryArr[0]] = queryArr[1]
+  })
+  return queries
 }
